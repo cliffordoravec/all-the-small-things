@@ -1,0 +1,75 @@
+<drawables>
+    <bitmap id="LauncherIcon" filename="launcher_icon.png" />
+
+    <bitmap id="ActiveMinutesIcon" filename="active_minutes.svg" scaleX="5%" scaleY="5%" scaleRelativeTo="screen">
+        <palette>
+            <color>CA7622</color>
+        </palette>
+    </bitmap>
+
+    <bitmap id="BluetoothConnectedIcon" filename="bluetooth.svg" scaleX="5%" scaleY="5%" scaleRelativeTo="screen">
+        <palette>
+            <color>CA7622</color>
+        </palette>
+    </bitmap>
+
+    <bitmap id="BluetoothDisconnectedIcon" filename="bluetooth.svg" scaleX="5%" scaleY="5%" scaleRelativeTo="screen">
+        <palette>
+            <color>888888</color>
+        </palette>
+    </bitmap>
+
+    <bitmap id="CaloriesIcon" filename="calories.svg" scaleX="5%" scaleY="5%" scaleRelativeTo="screen">
+        <palette>
+            <color>CA7622</color>
+        </palette>
+    </bitmap>
+
+    <bitmap id="ClimbIcon" filename="climb.svg" scaleX="5%" scaleY="5%" scaleRelativeTo="screen">
+        <palette>
+            <color>CA7622</color>
+        </palette>
+    </bitmap>
+
+    <bitmap id="CurrentHeartRateIcon" filename="current_heartrate.svg" scaleX="5%" scaleY="5%" scaleRelativeTo="screen">
+        <palette>
+            <color>CA7622</color>
+        </palette>
+    </bitmap>
+
+    <bitmap id="DistanceIcon" filename="distance.svg" scaleX="5%" scaleY="5%" scaleRelativeTo="screen">
+        <palette>
+            <color>CA7622</color>
+        </palette>
+    </bitmap>
+
+    <bitmap id="RespirationRateIcon" filename="respiration_rate.svg" scaleX="5%" scaleY="5%" scaleRelativeTo="screen">
+        <palette>
+            <color>CA7622</color>
+        </palette>
+    </bitmap>
+
+    <bitmap id="StepsIcon" filename="steps.svg" scaleX="5%" scaleY="5%" scaleRelativeTo="screen">
+        <palette>
+            <color>CA7622</color>
+        </palette>
+    </bitmap>
+
+    <bitmap id="RecoveryTimeIcon" filename="recovery_time.svg" scaleX="5%" scaleY="5%" scaleRelativeTo="screen">
+        <palette>
+            <color>CA7622</color>
+        </palette>
+    </bitmap>
+
+    <bitmap id="VO2MaxIcon" filename="vo2max.svg" scaleX="5%" scaleY="5%" scaleRelativeTo="screen">
+        <palette>
+            <color>CA7622</color>
+        </palette>
+    </bitmap>
+
+    <bitmap id="WeightIcon" filename="weight.svg" scaleX="5%" scaleY="5%" scaleRelativeTo="screen">
+        <palette>
+            <color>CA7622</color>
+        </palette>
+    </bitmap>
+</drawables>
