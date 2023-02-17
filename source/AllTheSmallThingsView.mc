@@ -14,6 +14,12 @@ class AllTheSmallThingsView extends WatchUi.WatchFace {
 
     var _width as Number?;
     var _height as Number?;
+    var _distanceUnits as Number?;
+    var _elevationUnits as Number?;
+    var _heightUnits as Number?;
+    var _paceUnits as Number?;
+    var _temperatureUnits as Number?;
+    var _weightUnits as Number?;
 
     var _activeMinutesIcon as BitmapResource?;
     var _bluetoothConnectedIcon as BitmapResource?;
@@ -34,6 +40,12 @@ class AllTheSmallThingsView extends WatchUi.WatchFace {
         var deviceSettings = System.getDeviceSettings();
         _width = deviceSettings.screenWidth;
         _height = deviceSettings.screenHeight;
+        _distanceUnits = deviceSettings.distanceUnits;
+        _elevationUnits = deviceSettings.elevationUnits;
+        _heightUnits = deviceSettings.heightUnits;
+        _paceUnits = deviceSettings.paceUnits;
+        _temperatureUnits = deviceSettings.temperatureUnits;
+        _weightUnits = deviceSettings.weightUnits;
     }
 
     // Load your resources here
@@ -111,7 +123,7 @@ class AllTheSmallThingsView extends WatchUi.WatchFace {
                 var factorsString = Lang.format("P$1$% H$2$% W$3$ $4$", [
                     conditions.precipitationChance, 
                     conditions.relativeHumidity, 
-                    self.metersPerSecondToMilesPerHour(conditions.windSpeed), 
+                    self.metersPerSecondToSystemDistancePerHour(conditions.windSpeed, _distanceUnits),
                     self.windBearingToCardinalDirection(conditions.windBearing)]);
                 var factorsDimensions = dc.getTextDimensions(factorsString, Graphics.FONT_XTINY);
                 factorsWidth = factorsDimensions[0];
@@ -126,8 +138,9 @@ class AllTheSmallThingsView extends WatchUi.WatchFace {
             if (conditions.highTemperature != null
                 && conditions.lowTemperature != null) {
                 var forecastConditionsString = Lang.format("H$1$' L$2$'", [
-                    self.celsiusToFahrenheit(conditions.highTemperature), 
-                    self.celsiusToFahrenheit(conditions.lowTemperature)]);
+                    self.celsiusToSystemTemperature(conditions.highTemperature, _temperatureUnits),
+                    self.celsiusToSystemTemperature(conditions.lowTemperature, _temperatureUnits)
+                ]);
                 var forecastConditionsDimensions = dc.getTextDimensions(forecastConditionsString, Graphics.FONT_XTINY);
                 forecastConditionsWidth = forecastConditionsDimensions[0];
                 temperatureHeight = forecastConditionsDimensions[1];
@@ -139,8 +152,9 @@ class AllTheSmallThingsView extends WatchUi.WatchFace {
             if (conditions.temperature != null
                 && conditions.feelsLikeTemperature != null) {
                 var currentConditionsString = Lang.format("$1$' F$2$' ", [
-                    self.celsiusToFahrenheit(conditions.temperature), 
-                    self.celsiusToFahrenheit(conditions.feelsLikeTemperature)]);
+                    self.celsiusToSystemTemperature(conditions.temperature, _temperatureUnits), 
+                    self.celsiusToSystemTemperature(conditions.feelsLikeTemperature, _temperatureUnits)
+                ]);
                 var currentConditionsDimensions = dc.getTextDimensions(currentConditionsString, Graphics.FONT_XTINY);
                 currentConditionsWidth = currentConditionsDimensions[0];
                 temperatureHeight = currentConditionsDimensions[1];
@@ -256,6 +270,7 @@ class AllTheSmallThingsView extends WatchUi.WatchFace {
             var oneDay = new Time.Duration(Gregorian.SECONDS_PER_DAY);
             var weekStart = new Time.Moment(now.value());
 
+            // TODO: Support system first day of week
             // Find Monday:
             while (true) {
                 var weekStartCalendar = Gregorian.info(weekStart, Time.FORMAT_SHORT);
@@ -281,7 +296,7 @@ class AllTheSmallThingsView extends WatchUi.WatchFace {
                 }
             }
 
-            var weeklyDistanceString = Lang.format("$1$mi week", [self.centimetersToMiles(weeklyDistance)]);
+            var weeklyDistanceString = Lang.format("$1$$2$ week", [self.centimetersToSystemDistance(weeklyDistance, _distanceUnits), self.systemDistanceUnit(_distanceUnits)]);
             var weeklyDistanceWidth = dc.getTextWidthInPixels(weeklyDistanceString, Graphics.FONT_XTINY);
             dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
             dc.drawText(_width - weeklyDistanceWidth - (indent * 3), dateOffsetY + dateHeight + sunriseSunsetHeight, Graphics.FONT_XTINY, weeklyDistanceString, Graphics.TEXT_JUSTIFY_LEFT);
@@ -321,11 +336,11 @@ class AllTheSmallThingsView extends WatchUi.WatchFace {
 
             if (info has :distance
                 && info.distance != null) {
-                statAngle = self.drawStat(dc, statAngle, _distanceIcon, Lang.format("$1$", [self.centimetersToMiles(info.distance)]), "mi");
+                statAngle = self.drawStat(dc, statAngle, _distanceIcon, Lang.format("$1$", [self.centimetersToSystemDistance(info.distance, _distanceUnits)]), self.systemDistanceUnit(_distanceUnits));
             }
 
             if (info has :metersClimbed) {
-                statAngle = self.drawStat(dc, statAngle, _climbIcon, Lang.format("$1$", [self.metersToFeet(info.metersClimbed)]), "ft");
+                statAngle = self.drawStat(dc, statAngle, _climbIcon, Lang.format("$1$", [self.metersToSystemHeight(info.metersClimbed, _heightUnits)]), self.systemHeightUnit(_heightUnits));
             }
 
             if (info has :timeToRecovery
@@ -338,7 +353,7 @@ class AllTheSmallThingsView extends WatchUi.WatchFace {
         if (profile != null) {
             if (profile has :weight
                 && profile.weight != null) {
-                statAngle = self.drawStat(dc, statAngle, _weightIcon, Lang.format("$1$", [self.gramsToPounds(profile.weight)]), "");
+                statAngle = self.drawStat(dc, statAngle, _weightIcon, Lang.format("$1$", [self.gramsToSystemWeight(profile.weight, _weightUnits)]), "");
             }
 
             if (profile has :vo2maxRunning
@@ -385,29 +400,103 @@ class AllTheSmallThingsView extends WatchUi.WatchFace {
         return angle + 20;
     }
 
-    function celsiusToFahrenheit(celsius as Number) as Number {
+    function systemDistanceUnit(distanceUnits as Number) as String {
+        if (distanceUnits == System.UNIT_METRIC) {
+            return "km";
+        }
+
+        return "mi";
+    }
+
+    function systemHeightUnit(heightUnits as Number) as String {
+        if (heightUnits == System.UNIT_METRIC) {
+            return "m";
+        }
+
+        return "ft";
+    }
+
+    function celsiusToSystemTemperature(celsius as Number, temperatureUnits as Number) as Number {
+        if (temperatureUnits == System.UNIT_METRIC) {
+            return celsius;
+        }
+
+        return self._celsiusToFahrenheit(celsius);
+    }
+
+    function metersToSystemHeight(meters as Float, heightUnits as Number) as Number {
+        if (heightUnits == System.UNIT_METRIC) {
+            return meters.toNumber();
+        }
+        
+        return self._metersToFeet(meters);
+    }
+
+    function centimetersToSystemDistance(centimeters as Number, distanceUnits as Number) as Number {
+        if (distanceUnits == System.UNIT_METRIC) {
+            return self._centimetersToKilometers(centimeters);
+        }
+
+        return self._centimetersToMiles(centimeters);
+    }
+
+    function gramsToSystemWeight(grams as Number, weightUnits as Number) as Number {
+        if (weightUnits == System.UNIT_METRIC) {
+            return self._gramsToKilograms(grams);
+        }
+
+        return self._gramsToPounds(grams);
+    }
+
+    function metersPerSecondToSystemDistancePerHour(meters as Float, distanceUnits as Number) as Number {
+        if (distanceUnits == System.UNIT_METRIC) {
+            return self._metersPerSecondToKilometersPerHour(meters);
+        }
+
+        return self._metersPerSecondToMilesPerHour(meters);
+    }
+
+    function _celsiusToFahrenheit(celsius as Number) as Number {
         return (celsius * (9 / 5)) + 32;
     }
 
-    function centimetersToMiles(centimeters as Number) as Number {
+    function _centimetersToMiles(centimeters as Number) as Number {
         return Math.round((centimeters / 160900).toNumber() * 100) / 100;
     }
 
-    function gramsToPounds(grams as Number) as Number {
+    function _centimetersToKilometers(centimeters as Number) as Number {
+        return Math.round((centimeters / 100000).toNumber() * 100) / 100;
+    }
+
+    function _gramsToPounds(grams as Number) as Number {
         return (grams / 453.6).toNumber();
     }
 
-    function metersPerSecondToMilesPerHour(meters as Float) as Number {
+    function _gramsToKilograms(grams as Number) as Number {
+        return (grams / 1000).toNumber();
+    }
+
+    function _metersPerSecondToMilesPerHour(meters as Float) as Number {
         return (meters * 2.237).toNumber();
     }
 
-    function metersToFeet(meters as Float) as Number {
+    function _metersPerSecondToKilometersPerHour(meters as Float) as Number {
+        return (meters * 3.6).toNumber();
+    }
+
+    function _metersToFeet(meters as Float) as Number {
         return Math.round(meters * 3.281).toNumber();
     }
 
+    /*
     function metersToMiles(meters as Number) as Number {
         return Math.round(meters / 1609).toNumber();
     }
+
+    function metersToKilometers(meters as Number) as Number {
+        return Math.round(meters / 1000).toNumber();
+    }
+    */
     
     function windBearingToCardinalDirection(bearing as Number) as String {
         if (bearing >= 348.75 || bearing < 11.25) {

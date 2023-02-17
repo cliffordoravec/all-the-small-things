@@ -39,13 +39,11 @@ Main area (top to bottom):
 
 You can have it in any color you like - so long as that color is orange!
 
-Also, imperial units.  You either love them or use them.
-
 ## Roadmap
 
 I created this watch face for my own personal use, therefore there isn't much of an emphasis on customization at the moment.
 
-Should people find this watch face useful and want to see configurable options for things such as colors, units, or even data fields, those might be things I become open to.
+Should people find this watch face useful and want to see configurable options for things such as colors or data fields, those might be things I add support for.
 
 But at the moment, what you see is what you get.
 
