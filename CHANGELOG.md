@@ -7,9 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0] - 2023-03-21
+
 ### Fixed
 
 - Fixed changelog compare URL.
+- Fixed weekly distance calculation to include current day's distance.
 
 ## [1.1.0] - 2023-02-17
 
@@ -24,6 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Initial release following internal testing.
 
-[unreleased]: https://github.com/cliffordoravec/all-the-small-things/compare/v1.1.0...HEAD
+[unreleased]: https://github.com/cliffordoravec/all-the-small-things/compare/v1.2.0...HEAD
+[1.2.0]: https://github.com/cliffordoravec/all-the-small-things/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/cliffordoravec/all-the-small-things/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/cliffordoravec/all-the-small-things/releases/tag/v1.0.0

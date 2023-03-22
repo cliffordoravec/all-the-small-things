@@ -265,6 +265,7 @@ class AllTheSmallThingsView extends WatchUi.WatchFace {
             }
         }
 
+        var info = ActivityMonitor.getInfo() as ActivityMonitor.Info;
         var activityHistory = ActivityMonitor.getHistory();
         if (activityHistory != null) {
             var oneDay = new Time.Duration(Gregorian.SECONDS_PER_DAY);
@@ -281,10 +282,20 @@ class AllTheSmallThingsView extends WatchUi.WatchFace {
                 weekStart = weekStart.subtract(oneDay);
             }
 
-            // Calculate distance since Monday:
+            // Calculate weekly distance since Monday:
             var weeklyDistance = 0;
+
+            // Add today's distance:
+            if (info != null
+                && info has :distance
+                && info.distance != null) {
+                weeklyDistance = weeklyDistance + info.distance;
+            }
+
+            // Add distance since Monday:
             for (var i = 0; i < activityHistory.size(); i++) {
                 var activity = activityHistory[i];
+
                 if (activity == null
                     || activity.startOfDay == null
                     || activity.startOfDay.compare(weekStart) < 0) {
@@ -311,7 +322,6 @@ class AllTheSmallThingsView extends WatchUi.WatchFace {
             statAngle = self.drawStat(dc, statAngle, _currentHeartRateIcon, Lang.format("$1$", [sample.heartRate]), "bpm");
         }
 
-        var info = ActivityMonitor.getInfo() as ActivityMonitor.Info;
         if (info != null) {
             if (info has :respirationRate
                 && info.respirationRate != null) {
