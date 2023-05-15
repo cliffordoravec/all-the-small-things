@@ -3,7 +3,9 @@
     <string id="AppName">All The Small Things</string>
 
     <string id="BackgroundColorTitle">Background Color</string>
-    <string id="ForegroundColorTitle">Foreground Color</string>
+    <string id="PrimaryForegroundColorTitle">Primary Foreground Color</string>
+    <string id="SecondaryForegroundColorTitle">Secondary Foreground Color</string>
+    <string id="TertiaryForegroundColorTitle">Tertiary Foreground Color</string>
     <string id="MilitaryFormatTitle">Military Format for 24 Hour Time</string>
 
     <string id="ColorBlack">Black</string>

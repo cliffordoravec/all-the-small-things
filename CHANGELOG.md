@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.3.0] - 2023-05-14
+
+### Added
+
+- Added support for calculating weekly totals based on device first day of week setting.
+- Added support for text color settings.
+
 ## [1.2.0] - 2023-03-21
 
 ### Fixed
@@ -27,7 +34,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Initial release following internal testing.
 
-[unreleased]: https://github.com/cliffordoravec/all-the-small-things/compare/v1.2.0...HEAD
+[unreleased]: https://github.com/cliffordoravec/all-the-small-things/compare/v1.3.0...HEAD
+[1.3.0]: https://github.com/cliffordoravec/all-the-small-things/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/cliffordoravec/all-the-small-things/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/cliffordoravec/all-the-small-things/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/cliffordoravec/all-the-small-things/releases/tag/v1.0.0

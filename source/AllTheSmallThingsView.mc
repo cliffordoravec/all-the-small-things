@@ -14,6 +14,11 @@ class AllTheSmallThingsView extends WatchUi.WatchFace {
 
     var _width as Number?;
     var _height as Number?;
+
+    var _primaryColor as Number?; // White
+    var _secondaryColor as Number?; // Light Grey
+    var _tertiaryColor as Number?; // Dark Grey
+
     var _distanceUnits as Number?;
     var _elevationUnits as Number?;
     var _heightUnits as Number?;
@@ -38,8 +43,14 @@ class AllTheSmallThingsView extends WatchUi.WatchFace {
         WatchFace.initialize();
 
         var deviceSettings = System.getDeviceSettings();
+
         _width = deviceSettings.screenWidth;
         _height = deviceSettings.screenHeight;
+
+        _primaryColor = Properties.getValue("PrimaryForegroundColor");
+        _secondaryColor = Properties.getValue("SecondaryForegroundColor");
+        _tertiaryColor = Properties.getValue("TertiaryForegroundColor");
+
         _distanceUnits = deviceSettings.distanceUnits;
         _elevationUnits = deviceSettings.elevationUnits;
         _heightUnits = deviceSettings.heightUnits;
@@ -88,7 +99,7 @@ class AllTheSmallThingsView extends WatchUi.WatchFace {
                 hours = 12;
             }
         } else {
-            if (getApp().getProperty("UseMilitaryFormat")) {
+            if (Properties.getValue("UseMilitaryFormat")) {
                 timeFormat = "$1$$2$";
                 hours = hours.format("%02d");
             }
@@ -101,11 +112,11 @@ class AllTheSmallThingsView extends WatchUi.WatchFace {
         var timeDimensions = dc.getTextDimensions(timeString, Graphics.FONT_NUMBER_THAI_HOT);
         var timeWidth = timeDimensions[0];
         var timeHeight = timeDimensions[1];
-        dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
+        dc.setColor(_primaryColor, Graphics.COLOR_TRANSPARENT);
         dc.drawText(_width - timeWidth - 5, (_height / 2) - (timeHeight / 2), Graphics.FONT_NUMBER_THAI_HOT, timeString, Graphics.TEXT_JUSTIFY_LEFT);
 
         var lineY = (_height / 2) + (timeHeight / 2) - 20;
-        dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
+        dc.setColor(_secondaryColor, Graphics.COLOR_TRANSPARENT);
         dc.drawLine(_width - timeWidth - 5, lineY, _width, lineY);
 
         var indent = 15;
@@ -128,7 +139,7 @@ class AllTheSmallThingsView extends WatchUi.WatchFace {
                 var factorsDimensions = dc.getTextDimensions(factorsString, Graphics.FONT_XTINY);
                 factorsWidth = factorsDimensions[0];
                 factorsHeight = factorsDimensions[1];
-                dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
+                dc.setColor(_tertiaryColor, Graphics.COLOR_TRANSPARENT);
                 dc.drawText(_width - factorsWidth - (indent * 1), timeOffsetY, Graphics.FONT_XTINY, factorsString, Graphics.TEXT_JUSTIFY_LEFT);
             }
 
@@ -144,7 +155,7 @@ class AllTheSmallThingsView extends WatchUi.WatchFace {
                 var forecastConditionsDimensions = dc.getTextDimensions(forecastConditionsString, Graphics.FONT_XTINY);
                 forecastConditionsWidth = forecastConditionsDimensions[0];
                 temperatureHeight = forecastConditionsDimensions[1];
-                dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
+                dc.setColor(_tertiaryColor, Graphics.COLOR_TRANSPARENT);
                 dc.drawText(_width - forecastConditionsWidth - (indent * 2), timeOffsetY - factorsHeight, Graphics.FONT_XTINY, forecastConditionsString, Graphics.TEXT_JUSTIFY_LEFT);
             }
 
@@ -158,7 +169,7 @@ class AllTheSmallThingsView extends WatchUi.WatchFace {
                 var currentConditionsDimensions = dc.getTextDimensions(currentConditionsString, Graphics.FONT_XTINY);
                 currentConditionsWidth = currentConditionsDimensions[0];
                 temperatureHeight = currentConditionsDimensions[1];
-                dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
+                dc.setColor(_secondaryColor, Graphics.COLOR_TRANSPARENT);
                 dc.drawText(_width - currentConditionsWidth - forecastConditionsWidth - (indent * 2), timeOffsetY - factorsHeight, Graphics.FONT_XTINY, currentConditionsString, Graphics.TEXT_JUSTIFY_LEFT);
             }
 
@@ -169,7 +180,7 @@ class AllTheSmallThingsView extends WatchUi.WatchFace {
                 var conditionDimensions = dc.getTextDimensions(conditionString, Graphics.FONT_XTINY);
                 conditionWidth = conditionDimensions[0];
                 conditionHeight = conditionDimensions[1];
-                dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
+                dc.setColor(_tertiaryColor, Graphics.COLOR_TRANSPARENT);
                 dc.drawText(_width - conditionWidth - (indent * 3), timeOffsetY - factorsHeight - temperatureHeight, Graphics.FONT_XTINY, conditionString, Graphics.TEXT_JUSTIFY_LEFT);
             }
         }
@@ -182,7 +193,7 @@ class AllTheSmallThingsView extends WatchUi.WatchFace {
         var dateDimensions = dc.getTextDimensions(dateString, Graphics.FONT_XTINY);
         var dateWidth = dateDimensions[0];
         var dateHeight = dateDimensions[1];
-        dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
+        dc.setColor(_primaryColor, Graphics.COLOR_TRANSPARENT);
         dc.drawText(_width - dateWidth - (indent * 1), dateOffsetY, Graphics.FONT_XTINY, dateString, Graphics.TEXT_JUSTIFY_LEFT);
 
         var batteryWidth = 0;
@@ -202,7 +213,7 @@ class AllTheSmallThingsView extends WatchUi.WatchFace {
             var batteryString = Lang.format("$1$$2$%", [batteryTime, battery.toNumber()]);
             batteryWidth = dc.getTextWidthInPixels(batteryString, Graphics.FONT_XTINY);
 
-            dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
+            dc.setColor(_secondaryColor, Graphics.COLOR_TRANSPARENT);
             dc.drawText(_width - dateWidth - batteryWidth - 5 - (indent * 1), dateOffsetY, Graphics.FONT_XTINY, batteryString, Graphics.TEXT_JUSTIFY_LEFT);
         }
 
@@ -259,7 +270,7 @@ class AllTheSmallThingsView extends WatchUi.WatchFace {
                     var sunriseSunsetDimensions = dc.getTextDimensions(sunriseSunsetString, Graphics.FONT_XTINY);
                     sunriseSunsetWidth = sunriseSunsetDimensions[0];
                     sunriseSunsetHeight = sunriseSunsetDimensions[1];
-                    dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
+                    dc.setColor(_tertiaryColor, Graphics.COLOR_TRANSPARENT);
                     dc.drawText(_width - sunriseSunsetWidth - (indent * 2), dateOffsetY + dateHeight, Graphics.FONT_XTINY, sunriseSunsetString, Graphics.TEXT_JUSTIFY_LEFT);
                 }
             }
@@ -271,11 +282,10 @@ class AllTheSmallThingsView extends WatchUi.WatchFace {
             var oneDay = new Time.Duration(Gregorian.SECONDS_PER_DAY);
             var weekStart = new Time.Moment(now.value());
 
-            // TODO: Support system first day of week
-            // Find Monday:
+            // Find first day of week:
             while (true) {
                 var weekStartCalendar = Gregorian.info(weekStart, Time.FORMAT_SHORT);
-                if (weekStartCalendar.day_of_week == Gregorian.DAY_MONDAY) {
+                if (weekStartCalendar.day_of_week == deviceSettings.firstDayOfWeek) {
                     break;
                 }
 
@@ -309,7 +319,7 @@ class AllTheSmallThingsView extends WatchUi.WatchFace {
 
             var weeklyDistanceString = Lang.format("$1$$2$ week", [self.centimetersToSystemDistance(weeklyDistance, _distanceUnits), self.systemDistanceUnit(_distanceUnits)]);
             var weeklyDistanceWidth = dc.getTextWidthInPixels(weeklyDistanceString, Graphics.FONT_XTINY);
-            dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
+            dc.setColor(_tertiaryColor, Graphics.COLOR_TRANSPARENT);
             dc.drawText(_width - weeklyDistanceWidth - (indent * 3), dateOffsetY + dateHeight + sunriseSunsetHeight, Graphics.FONT_XTINY, weeklyDistanceString, Graphics.TEXT_JUSTIFY_LEFT);
         }
 
@@ -401,10 +411,10 @@ class AllTheSmallThingsView extends WatchUi.WatchFace {
         var textY = y - (icon.getHeight() / 2) + 3;
         var metricWidth = dc.getTextWidthInPixels(metric, Graphics.FONT_XTINY);
 
-        dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
+        dc.setColor(_secondaryColor, Graphics.COLOR_TRANSPARENT);
         dc.drawText(textX, textY, Graphics.FONT_XTINY, metric, Graphics.TEXT_JUSTIFY_LEFT);
 
-        dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
+        dc.setColor(_tertiaryColor, Graphics.COLOR_TRANSPARENT);
         dc.drawText(textX + metricWidth + 1, textY, Graphics.FONT_XTINY, unit, Graphics.TEXT_JUSTIFY_LEFT);
 
         return angle + 20;
