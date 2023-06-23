@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Added unit test support for conversions.
+
+### Changed
+
+- Moved conversions into own class.
+
 ### Fixed
 
 - Fixed numerical truncation issues in conversion calculations.
