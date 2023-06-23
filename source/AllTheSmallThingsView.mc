@@ -441,7 +441,7 @@ class AllTheSmallThingsView extends WatchUi.WatchFace {
             return celsius;
         }
 
-        return self._celsiusToFahrenheit(celsius);
+        return self._celsiusToFahrenheit(celsius).toNumber();
     }
 
     function metersToSystemHeight(meters as Float, heightUnits as Number) as Number {
@@ -449,75 +449,65 @@ class AllTheSmallThingsView extends WatchUi.WatchFace {
             return meters.toNumber();
         }
         
-        return self._metersToFeet(meters);
+        return self._metersToFeet(meters).toNumber();
     }
 
     function centimetersToSystemDistance(centimeters as Number, distanceUnits as Number) as Number {
         if (distanceUnits == System.UNIT_METRIC) {
-            return self._centimetersToKilometers(centimeters);
+            return self._centimetersToKilometers(centimeters).toNumber();
         }
 
-        return self._centimetersToMiles(centimeters);
+        return self._centimetersToMiles(centimeters).toNumber();
     }
 
     function gramsToSystemWeight(grams as Number, weightUnits as Number) as Number {
         if (weightUnits == System.UNIT_METRIC) {
-            return self._gramsToKilograms(grams);
+            return self._gramsToKilograms(grams).toNumber();
         }
 
-        return self._gramsToPounds(grams);
+        return self._gramsToPounds(grams).toNumber();
     }
 
     function metersPerSecondToSystemDistancePerHour(meters as Float, distanceUnits as Number) as Number {
         if (distanceUnits == System.UNIT_METRIC) {
-            return self._metersPerSecondToKilometersPerHour(meters);
+            return self._metersPerSecondToKilometersPerHour(meters).toNumber();
         }
 
-        return self._metersPerSecondToMilesPerHour(meters);
+        return self._metersPerSecondToMilesPerHour(meters).toNumber();
     }
 
-    function _celsiusToFahrenheit(celsius as Number) as Number {
-        return (celsius * (9 / 5)) + 32;
+    function _celsiusToFahrenheit(celsius as Number) as Float {
+        return (celsius * (9.0 / 5.0)) + 32.0;
     }
 
-    function _centimetersToMiles(centimeters as Number) as Number {
-        return Math.round((centimeters / 160900).toNumber() * 100) / 100;
+    function _centimetersToMiles(centimeters as Number) as Float {
+        return (centimeters / 160900.0);
     }
 
-    function _centimetersToKilometers(centimeters as Number) as Number {
-        return Math.round((centimeters / 100000).toNumber() * 100) / 100;
+    function _centimetersToKilometers(centimeters as Number) as Float {
+        return (centimeters / 100000.0);
     }
 
-    function _gramsToPounds(grams as Number) as Number {
-        return (grams / 453.6).toNumber();
+    function _gramsToPounds(grams as Number) as Float {
+        return (grams / 453.6);
     }
 
-    function _gramsToKilograms(grams as Number) as Number {
-        return (grams / 1000).toNumber();
+    function _gramsToKilograms(grams as Number) as Float {
+        return (grams / 1000.0);
     }
 
-    function _metersPerSecondToMilesPerHour(meters as Float) as Number {
-        return (meters * 2.237).toNumber();
+    function _metersPerSecondToMilesPerHour(meters as Float) as Float {
+        return (meters * 2.237);
     }
 
-    function _metersPerSecondToKilometersPerHour(meters as Float) as Number {
-        return (meters * 3.6).toNumber();
+    function _metersPerSecondToKilometersPerHour(meters as Float) as Float {
+        return (meters * 3.6);
     }
 
-    function _metersToFeet(meters as Float) as Number {
-        return Math.round(meters * 3.281).toNumber();
+    function _metersToFeet(meters as Float) as Float {
+        return Math.round(meters * 3.281);
     }
 
-    /*
-    function metersToMiles(meters as Number) as Number {
-        return Math.round(meters / 1609).toNumber();
-    }
-
-    function metersToKilometers(meters as Number) as Number {
-        return Math.round(meters / 1000).toNumber();
-    }
-    */
-    
     function windBearingToCardinalDirection(bearing as Number) as String {
         if (bearing >= 348.75 || bearing < 11.25) {
             return "N";

@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Fixed numerical truncation issues in conversion calculations.
+
+### TODO
+
+- Have to refresh screen for text color changes to take effect - change to simply reading the value at render time?
+
 ## [1.3.0] - 2023-05-14
 
 ### Added
