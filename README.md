@@ -40,6 +40,10 @@ Main area (top to bottom):
 
 You can have it in any color you like - so long as that color is orange!
 
+## Known Issues
+
+A screen refresh (press `Up-Menu` or `Down`) is required after changing colors in settings.
+
 ## Roadmap
 
 I created this watch face for my own personal use, therefore there isn't much of an emphasis on customization at the moment.
