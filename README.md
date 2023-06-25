@@ -11,6 +11,7 @@ Devices with a 280x280 screen are currently supported:
 * Enduro™
 * fēnix® 6X Pro / 6X Sapphire / 6X Pro Solar / tactix® Delta Sapphire / Delta Solar / Delta Solar - Ballistics Edition / quatix® 6X / 6X Solar / 6X Dual Power
 * fēnix® 7X / tactix® 7 / quatix® 7X Solar / Enduro™ 2
+* fēnix® 7X Pro
 
 ## Complications
 
